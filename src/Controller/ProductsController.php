@@ -4,7 +4,6 @@ namespace App\Controller;
 use App\Entity\Products;
 use App\Service\Interfaces\ProductsManagementInterface;
 use FOS\RestBundle\Controller\Annotations\Get;
-use FOS\RestBundle\Controller\Annotations\View;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -14,12 +13,11 @@ class ProductsController extends AbstractController
 
     public function __construct(ProductsManagementInterface $iProducts)
     {
-        $this->$iProducts = $iProducts;
+        $this->iProducts = $iProducts;
     }
 
     /**
      * @Get(path="/api/products", name="products")
-     * @View
      *
      * @return Response
      */
@@ -27,18 +25,17 @@ class ProductsController extends AbstractController
     {
         $datas = $this->iProducts->productsList();
 
-        return $this->json($datas);
+        return $this->json($datas, 200, [], ['groups' => 'list_products']);
     }
 
     /**
      * @Get(path="/api/products/{id}", name="show_product")
-     * @View
      *
      * @param Products $product
      */
     public function productShow(Products $product): Response
     {
         $product = $this->iProducts->productShow($product);
-        return $this->json($product);
+        return $this->json($product, 200, [], ['groups' => 'show_product']);
     }
 }

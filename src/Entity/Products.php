@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ProductsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProductsRepository::class)]
@@ -12,33 +13,40 @@ class Products
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['list_products'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(message:"Cet champs est obligatoire")]
+    #[Groups(['show_product', 'list_products'])]
     private $name;
 
     #[ORM\Column(type: 'text')]
     #[Assert\NotBlank(message:"Cet champs est obligatoire")]
     #[Assert\Length(min:20, max:2000, minMessage:"La description doit faire minimum {{ limit }} caractères", maxMessage:"La description doit faire maximum {{ limit }} caratères")]
+    #[Groups(['show_product', 'list_products'])]
     private $description;
 
     #[ORM\Column(type: 'float')]
     #[Assert\NotBlank(message:"Cet champs est obligatoire")]
     #[Assert\PositiveOrZero(message:"Le prix doit être positif")]
+    #[Groups(['show_product', 'list_products'])]
     private $price;
 
     #[ORM\Column(type: 'integer')]
     #[Assert\NotBlank(message:"Le stock est obligatoire")]
     #[Assert\PositiveOrZero(message:"Le stock doit être positif ou égal a zéro")]
+    #[Groups(['show_product', 'list_products'])]
     private $stock;
 
     #[ORM\Column(type: 'datetime_immutable')]
     #[Assert\DateTime(message:"Renseignez une date de création valide")]
+    #[Groups(['list_products'])]
     private $createdAt;
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     #[Assert\DateTime(message:"Renseignez une date de modification valide")]
+    #[Groups(['show_product'])]
     private $updatedAt;
 
     public function __construct()

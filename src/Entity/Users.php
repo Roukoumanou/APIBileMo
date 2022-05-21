@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\UsersRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use App\Repository\UsersRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
 class Users implements UserInterface, PasswordAuthenticatedUserInterface
@@ -19,6 +20,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     #[Assert\NotBlank(message:"Le champ email ne peut être vide")]
     #[Assert\Email(message:"Ce mail n'est pas valide !")]
+    #[Groups(['list_users', 'show_user', 'list_customers'])]
     private $email;
 
     #[ORM\Column(type: 'json')]
@@ -32,11 +34,13 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(message:"Le nom ne peut être vide !")]
     #[Assert\Length(min: 3, max: 255, minMessage: "Le nom doit faire minimum {{ limit }} caratères", maxMessage:"Le nom ne doit pas dépasser {{ limit }} caractères")]
+    #[Groups(['list_users', 'show_user', 'list_customers'])]
     private $firstName;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(message:"Le nom ne peut être vide !")]
     #[Assert\Length(min: 3, max: 255, minMessage: "Le prénom doit faire minimum {{ limit }} caratères", maxMessage:"Le prénom ne doit pas dépasser {{ limit }} caractères")]
+    #[Groups(['list_users', 'show_user', 'list_customers'])]
     private $lastName;
 
     #[ORM\Column(type: 'datetime_immutable')]
@@ -47,7 +51,12 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne(targetEntity: Customers::class, inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['show_user'])]
     private $customer;
+
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['list_users', 'show_user', 'list_customers'])]
+    private $isValid = true;
 
     public function __construct()
     {
@@ -148,6 +157,11 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getFullName(): string
+    {
+        return $this->firstName. ' '. $this->lastName;
+    }
+
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
@@ -180,6 +194,18 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCustomer(?Customers $customer): self
     {
         $this->customer = $customer;
+
+        return $this;
+    }
+
+    public function getIsValid(): ?bool
+    {
+        return $this->isValid;
+    }
+
+    public function setIsValid(bool $isValid): self
+    {
+        $this->isValid = $isValid;
 
         return $this;
     }
