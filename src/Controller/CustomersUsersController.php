@@ -64,20 +64,12 @@ class CustomersUsersController extends AbstractController
     /**
      * @Delete(path="/api/customer/{id}/user/{email}", name="delete_user_by_customer")
      *
-     * @param Users $user
+     * @param Request $request
      * @return Response
      */
-    public function DeleteUserLinkedCustomer(Request $request, UsersRepository $usersRepository, CustomersRepository $customersRepository): Response
+    public function DeleteUserLinkedCustomer(Request $request): Response
     {
-        $id = (int) $request->get('id');
-        $customer = $customersRepository->find($id);
-
-        $email = (string) $request->get('email');
-        /** @var Users $user */
-        $user = $usersRepository->findFordetail($email, $customer);
-        $user->setIsValid(false);
-
-        $this->em->flush();
+        $user = $this->iCustomers->DeleteUserLinkedCustomer($request);
         
         return $this->json($user, Response::HTTP_MOVED_PERMANENTLY, [], ['groups' => 'list_users']);
     }
