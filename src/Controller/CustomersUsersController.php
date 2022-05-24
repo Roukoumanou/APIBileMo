@@ -75,9 +75,9 @@ class CustomersUsersController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function DeleteUserLinkedCustomer(Request $request): Response
+    public function deleteUserLinkedCustomer(Request $request): Response
     {
-        $user = $this->iCustomers->DeleteUserLinkedCustomer($request);
+        $user = $this->iCustomers->deleteUserLinkedCustomer($request);
         
         return $this->json($user, Response::HTTP_MOVED_PERMANENTLY, [], ['groups' => 'list_users']);
     }

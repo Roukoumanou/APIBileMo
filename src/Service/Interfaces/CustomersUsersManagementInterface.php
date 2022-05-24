@@ -13,5 +13,5 @@ interface CustomersUsersManagementInterface
 
     public function addUserLinkedCustomer(Request $request);
 
-    public function DeleteUserLinkedCustomer(Request $request): Users;
+    public function deleteUserLinkedCustomer(Request $request): Users;
 }
