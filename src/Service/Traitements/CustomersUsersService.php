@@ -132,7 +132,7 @@ class CustomersUsersService implements CustomersUsersManagementInterface
      * @param Request $request
      * @return Users
      */
-    public function DeleteUserLinkedCustomer(Request $request): Users
+    public function deleteUserLinkedCustomer(Request $request): Users
     {
         $id = (int) $request->get('id');
         $email = (string) $request->get('email');
