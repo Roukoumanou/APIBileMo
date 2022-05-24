@@ -1,10 +1,7 @@
 <?php
 namespace App\Controller;
 
-use App\Entity\Users;
 use App\Entity\Customers;
-use App\Repository\UsersRepository;
-use App\Repository\CustomersRepository;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations\Get;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,9 +25,20 @@ class CustomersUsersController extends AbstractController
      * @param Customers $customer
      * @return Response
      */
-    public function customersUsersList(Customers $customer): Response
+    public function customersUsersList(Request $request, Customers $customer): Response
     {
-        $data = $this->iCustomers->customersUsersList($customer);
+        $page = (int) $request->query->get('page', 1);
+
+        $users = $this->iCustomers->customersUsersList($customer, $page);
+
+        $customerDetail = [
+            'N° de Client' => $customer->getId(), 
+            'Comagnie du client' => $customer->getCompany(),
+            'Liste des utilisateurs liés a ce client' => '..............',
+
+        ];
+
+        $data = array_merge($customerDetail, $users);
 
         return $this->json($data, 200, [], ['groups' => 'list_users']);
     }

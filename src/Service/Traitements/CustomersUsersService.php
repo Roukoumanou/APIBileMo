@@ -3,10 +3,13 @@ namespace App\Service\Traitements;
 
 use App\Entity\Users;
 use App\Entity\Customers;
+use Pagerfanta\Pagerfanta;
 use App\Repository\UsersRepository;
+use Pagerfanta\Adapter\ArrayAdapter;
 use App\Repository\CustomersRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use App\Exceptions\ResourceViolationException;
 use Symfony\Component\Serializer\SerializerInterface;
 use App\Service\Interfaces\CustomersUsersManagementInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -14,6 +17,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class CustomersUsersService implements CustomersUsersManagementInterface
 {
+    public const MAX_PER_PAGE = 5;
+
     private UsersRepository $usersRepository;
 
     private EntityManagerInterface $em;
@@ -49,20 +54,15 @@ class CustomersUsersService implements CustomersUsersManagementInterface
      * @param Customers $customer
      * @return array
      */
-    public function customersUsersList(Customers $customer): array
+    public function customersUsersList(Customers $customer, int $page = 1): array
     {
         $users = $this->usersRepository->findByCustomer($customer);
 
-        $customerDetail = [
-            'N° de Client' => $customer->getId(), 
-            'Comagnie du client' => $customer->getCompany(),
-            'Liste des utilisateurs liés a ce client' => '..............',
+        $adapter = new ArrayAdapter($users);
+        $pagerfanta = Pagerfanta::createForCurrentPageWithMaxPerPage($adapter, $page, self::MAX_PER_PAGE);
+        $currentPageResults = $pagerfanta->getCurrentPageResults();
 
-        ];
-
-        $data = array_merge($customerDetail, $users);
-
-        return $data;
+        return (array) $currentPageResults;
     }
 
     /**
@@ -88,9 +88,8 @@ class CustomersUsersService implements CustomersUsersManagementInterface
      * Ajoute un utilisateur lié à un client dans la base de donnée
      *
      * @param Request $request
-     * @return Users
      */
-    public function addUserLinkedCustomer(Request $request): Users
+    public function addUserLinkedCustomer(Request $request)
     {
         $id = (int) $request->get('id');
 
@@ -104,7 +103,17 @@ class CustomersUsersService implements CustomersUsersManagementInterface
         $errors = $this->validator->validate($user);
         
         if (count($errors)) {
-            return $this->serializer->serialize($errors, 'json');
+            $messages = "";
+
+            foreach ($errors as $error) {
+                $messages .= sprintf(
+                    "Field %s: %s ",
+                    $error->getPropertyPath(),
+                    $error->getMessage()
+                );
+            }
+
+            throw new ResourceViolationException($messages);
         }
 
         $user->setCreatedAt(new \DateTimeImmutable())

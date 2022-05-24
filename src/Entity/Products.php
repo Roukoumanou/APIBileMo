@@ -36,7 +36,6 @@ class Products
     #[ORM\Column(type: 'integer')]
     #[Assert\NotBlank(message:"Le stock est obligatoire")]
     #[Assert\PositiveOrZero(message:"Le stock doit être positif ou égal a zéro")]
-    #[Groups(['show_product', 'list_products'])]
     private $stock;
 
     #[ORM\Column(type: 'datetime_immutable')]
