@@ -2,10 +2,13 @@
 namespace App\Controller;
 
 use App\Entity\Products;
-use App\Service\Interfaces\ProductsManagementInterface;
+use Pagerfanta\Pagerfanta;
+use Pagerfanta\Adapter\ArrayAdapter;
 use FOS\RestBundle\Controller\Annotations\Get;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use App\Service\Interfaces\ProductsManagementInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 
 class ProductsController extends AbstractController
 {
@@ -19,13 +22,17 @@ class ProductsController extends AbstractController
     /**
      * @Get(path="/api/products", name="products")
      *
+     * @param Request $request
      * @return Response
      */
-    public function productsList(): Response
+    public function productsList(Request $request): Response
     {
-        $datas = $this->iProducts->productsList();
+        $page = (int) $request->query->get('page', 1);
 
-        return $this->json($datas, 200, [], ['groups' => 'list_products']);
+        $products = $this->iProducts->productsList($page);
+
+
+        return $this->json($products, 200, [], ['groups' => 'list_products']);
     }
 
     /**

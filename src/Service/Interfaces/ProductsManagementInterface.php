@@ -5,7 +5,7 @@ use App\Entity\Products;
 
 interface ProductsManagementInterface
 {
-    public function productsList(): array;
+    public function productsList(int $page = 1): array;
 
     public function productShow(Products $products): Products;
 }
