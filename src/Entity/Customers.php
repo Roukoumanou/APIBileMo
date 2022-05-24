@@ -52,7 +52,6 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->users = new ArrayCollection();
-        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -121,8 +120,6 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function eraseCredentials()
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
     }
 
     public function getCompany(): ?string
