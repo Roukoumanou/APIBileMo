@@ -2,13 +2,11 @@
 namespace App\Controller;
 
 use App\Entity\Products;
-use Pagerfanta\Pagerfanta;
-use Pagerfanta\Adapter\ArrayAdapter;
+use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations\Get;
 use Symfony\Component\HttpFoundation\Response;
 use App\Service\Interfaces\ProductsManagementInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 
 class ProductsController extends AbstractController
 {
@@ -29,10 +27,11 @@ class ProductsController extends AbstractController
     {
         $page = (int) $request->query->get('page', 1);
 
-        $products = $this->iProducts->productsList($page);
+        $data = $this->iProducts->productsList($page);
+        
+        $response = new Response($data, 200, ['Content-Type' => 'application/json']);
 
-
-        return $this->json($products, 200, [], ['groups' => 'list_products']);
+        return $response;
     }
 
     /**
@@ -42,7 +41,11 @@ class ProductsController extends AbstractController
      */
     public function productShow(Products $product): Response
     {
-        $product = $this->iProducts->productShow($product);
-        return $this->json($product, 200, [], ['groups' => 'show_product']);
+        $data = $this->iProducts->productShow($product);
+
+        $response = new Response($data, 200, ['Content-Type' => 'application/json']);
+        
+        return $response;
+
     }
 }

@@ -4,16 +4,20 @@ namespace App\Service\Traitements;
 use App\Entity\Users;
 use App\Entity\Customers;
 use Pagerfanta\Pagerfanta;
+use Hateoas\Configuration\Route;
 use App\Repository\UsersRepository;
 use Pagerfanta\Adapter\ArrayAdapter;
 use App\Repository\CustomersRepository;
+use JMS\Serializer\SerializerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Exceptions\ResourceViolationException;
-use Symfony\Component\Serializer\SerializerInterface;
+use Hateoas\Representation\CollectionRepresentation;
+use Hateoas\Representation\Factory\PagerfantaFactory;
 use App\Service\Interfaces\CustomersUsersManagementInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Serializer\SerializerInterface as SerializerSerializerInterface;
 
 class CustomersUsersService implements CustomersUsersManagementInterface
 {
@@ -31,13 +35,16 @@ class CustomersUsersService implements CustomersUsersManagementInterface
 
     private SerializerInterface $serializer;
 
+    private SerializerSerializerInterface $symSerializer;
+
     public function __construct(
         UsersRepository $usersRepository,
         EntityManagerInterface $em,
         CustomersRepository $customersRepository,
         ValidatorInterface $validator,
         UserPasswordHasherInterface $hasher,
-        SerializerInterface $serializer
+        SerializerInterface $serializer, 
+        SerializerSerializerInterface $symSerializer
     )
     {
         $this->usersRepository = $usersRepository;
@@ -46,6 +53,7 @@ class CustomersUsersService implements CustomersUsersManagementInterface
         $this->validator = $validator;
         $this->hasher = $hasher;
         $this->serializer = $serializer;
+        $this->symSerializer = $symSerializer;
     }
 
     /**
@@ -54,7 +62,7 @@ class CustomersUsersService implements CustomersUsersManagementInterface
      * @param Customers $customer
      * @return array
      */
-    public function customersUsersList(Customers $customer, int $page = 1): array
+    public function customersUsersList(Customers $customer, int $page = 1): string
     {
         $users = $this->usersRepository->findByCustomer($customer);
 
@@ -62,16 +70,25 @@ class CustomersUsersService implements CustomersUsersManagementInterface
         $pagerfanta = Pagerfanta::createForCurrentPageWithMaxPerPage($adapter, $page, self::MAX_PER_PAGE);
         $currentPageResults = $pagerfanta->getCurrentPageResults();
 
-        return (array) $currentPageResults;
+        $pagerfantaFactory   = new PagerfantaFactory(); // you can pass the page and limit parameters name
+        $paginatedCollection = $pagerfantaFactory->createRepresentation(
+            $pagerfanta,
+            new Route('customer_users', ['id' => $customer->getId()]),
+            new CollectionRepresentation($currentPageResults)
+        );
+
+        $data = $this->serializer->serialize($paginatedCollection, 'json');
+
+        return (string) $data;
     }
 
     /**
      * Renvois un utilisateur lié à un client pour affichage de ses détails
      *
      * @param Request $request
-     * @return Users|null
+     * @return string
      */
-    public function customerUserShow(Request $request): ?Users
+    public function customerUserShow(Request $request): string
     {
         $id = (int) $request->get('id');
         $email = (string) $request->get('email');
@@ -81,7 +98,9 @@ class CustomersUsersService implements CustomersUsersManagementInterface
 
         $user = $this->getUser($customer, $email);
 
-        return $user;
+        $data = $this->serializer->serialize($user, 'json');
+
+        return (string) $data;
     }
 
     /**
@@ -94,17 +113,15 @@ class CustomersUsersService implements CustomersUsersManagementInterface
         $id = (int) $request->get('id');
 
         $customer = $this->getCustomer($id);
-
+        
         /** @var Users $user */
-        $user = $this->serializer->deserialize($request->getContent(), Users::class, 'json');
-
-        $password = $this->hasher->hashPassword($user, $user->getPassword());
+        $user = $this->symSerializer->deserialize( (string) $request->getContent(), "App\Entity\Users", 'json');
 
         $errors = $this->validator->validate($user);
         
+        $messages = "";
         if (count($errors)) {
-            $messages = "";
-
+            
             foreach ($errors as $error) {
                 $messages .= sprintf(
                     "Field %s: %s ",
@@ -116,6 +133,9 @@ class CustomersUsersService implements CustomersUsersManagementInterface
             throw new ResourceViolationException($messages);
         }
 
+        $password = $this->hasher->hashPassword($user, $user->getPassword());
+
+
         $user->setCreatedAt(new \DateTimeImmutable())
             ->setPassword($password)
             ->setCustomer($customer);
@@ -123,7 +143,9 @@ class CustomersUsersService implements CustomersUsersManagementInterface
         $this->em->persist($user);
         $this->em->flush();
 
-        return $user;
+        $data = $this->serializer->serialize($user, 'json');
+
+        return $data;
     }
 
     /**
@@ -132,7 +154,7 @@ class CustomersUsersService implements CustomersUsersManagementInterface
      * @param Request $request
      * @return Users
      */
-    public function deleteUserLinkedCustomer(Request $request): Users
+    public function deleteUserLinkedCustomer(Request $request): string
     {
         $id = (int) $request->get('id');
         $email = (string) $request->get('email');
@@ -143,7 +165,9 @@ class CustomersUsersService implements CustomersUsersManagementInterface
 
         $this->em->flush();
 
-        return $user;
+        $data = $this->serializer->serialize($user, 'json');
+
+        return $data;
     }
 
     /**

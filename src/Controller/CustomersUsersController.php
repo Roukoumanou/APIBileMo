@@ -1,22 +1,29 @@
 <?php
 namespace App\Controller;
 
+use App\Entity\Users;
 use App\Entity\Customers;
+use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations\Get;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\Controller\Annotations\Post;
+use FOS\RestBundle\Controller\Annotations\View;
 use FOS\RestBundle\Controller\Annotations\Delete;
 use App\Service\Interfaces\CustomersUsersManagementInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class CustomersUsersController extends AbstractController
 {
     private CustomersUsersManagementInterface $iCustomers;
 
-    public function __construct(CustomersUsersManagementInterface $iCustomers)
+    private SerializerInterface $serializer;
+
+    public function __construct(CustomersUsersManagementInterface $iCustomers, SerializerInterface $serializer)
     {
         $this->iCustomers = $iCustomers;
+        $this->serializer = $serializer;
     }
 
     /**
@@ -29,18 +36,11 @@ class CustomersUsersController extends AbstractController
     {
         $page = (int) $request->query->get('page', 1);
 
-        $users = $this->iCustomers->customersUsersList($customer, $page);
+        $data = $this->iCustomers->customersUsersList($customer, $page);
 
-        $customerDetail = [
-            'N° de Client' => $customer->getId(), 
-            'Comagnie du client' => $customer->getCompany(),
-            'Liste des utilisateurs liés a ce client' => '..............',
-
-        ];
-
-        $data = array_merge($customerDetail, $users);
-
-        return $this->json($data, 200, [], ['groups' => 'list_users']);
+        $response = new Response($data, Response::HTTP_OK, ['Content-Type' => 'application/json']);
+        
+        return $response;
     }
 
     /**
@@ -53,7 +53,9 @@ class CustomersUsersController extends AbstractController
     {
         $data = $this->iCustomers->customerUserShow($request);
 
-        return $this->json($data, 200, [], ['groups' => 'show_user']);
+        $response = new Response($data, Response::HTTP_OK, ['Content-Type' => 'application/json']);
+        
+        return $response;
     }
 
     /**
@@ -62,11 +64,13 @@ class CustomersUsersController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function addUserLinkedCustomer(Request $request)
+    public function addUserLinkedCustomer(Request $request): Response
     {
         $user = $this->iCustomers->addUserLinkedCustomer($request);
         
-        return $this->json($user, Response::HTTP_CREATED, [], ['groups' => 'show_user']);
+        $response = new Response($user, Response::HTTP_CREATED, ['Content-Type' => 'application/json']);
+        
+        return $response;
     }
 
     /**
@@ -79,6 +83,8 @@ class CustomersUsersController extends AbstractController
     {
         $user = $this->iCustomers->deleteUserLinkedCustomer($request);
         
-        return $this->json($user, Response::HTTP_MOVED_PERMANENTLY, [], ['groups' => 'list_users']);
+        $response = new Response($user, Response::HTTP_OK, ['Content-Type' => 'application/json']);
+        
+        return $response;
     }
 }

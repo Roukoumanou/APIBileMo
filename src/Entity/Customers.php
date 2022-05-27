@@ -2,16 +2,17 @@
 
 namespace App\Entity;
 
-use App\Repository\CustomersRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
+use App\Repository\CustomersRepository;
+use JMS\Serializer\Annotation as Serializer;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: CustomersRepository::class)]
+#[Serializer\ExclusionPolicy("ALL")]
 class Customers implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -22,7 +23,7 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     #[Assert\NotBlank(message:"Le champ email ne peut être vide")]
     #[Assert\Email(message:"Ce mail n'est pas valide !")]
-    #[Groups(['show_customer', 'list_customers', 'show_user'])]
+    #[Serializer\Expose()]
     private $email;
 
     #[ORM\Column(type: 'json')]
@@ -34,7 +35,7 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(message:"le nom de la société ne peut être vide !")]
-    #[Groups(['show_customer', 'list_customers', 'show_user'])]
+    #[Serializer\Expose()]
     private $company;
 
     #[ORM\Column(type: 'datetime_immutable')]
@@ -46,7 +47,6 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
     private $updatedAt;
 
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: Users::class, orphanRemoval: true)]
-    #[Groups(['show_customer'])]
     private $users;
 
     public function __construct()
