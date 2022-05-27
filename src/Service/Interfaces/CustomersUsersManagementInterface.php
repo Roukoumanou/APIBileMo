@@ -7,11 +7,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 interface CustomersUsersManagementInterface
 {
-    public function customersUsersList(Customers $customer, int $page): array;
+    public function customersUsersList(Customers $customer, int $page): string;
 
-    public function customerUserShow(Request $request): ?Users;
+    public function customerUserShow(Request $request): string;
 
     public function addUserLinkedCustomer(Request $request);
 
-    public function deleteUserLinkedCustomer(Request $request): Users;
+    public function deleteUserLinkedCustomer(Request $request): string;
 }

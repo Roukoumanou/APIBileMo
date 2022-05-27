@@ -4,14 +4,44 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UsersRepository;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Serializer\Annotation\Groups;
+use JMS\Serializer\Annotation as Serializer;
+use Hateoas\Configuration\Annotation as Hateoas;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
+/**
+ * @Hateoas\Relation(
+ *      "self",
+ *      href = @Hateoas\Route(
+ *          "customer_user_detail",
+ *          parameters = { "id" = "expr(object.getCustomer().getId())", "email" = "expr(object.getEmail())" }
+ *      )
+ * )
+ * @Hateoas\Relation(
+ *      "create",
+ *      href = @Hateoas\Route(
+ *          "add_user_by_customer",
+ *          parameters = { "id" = "expr(object.getCustomer().getId())"}
+ *      )
+ * )
+ * @Hateoas\Relation(
+ *      "delete",
+ *      href = @Hateoas\Route(
+ *          "delete_user_by_customer",
+ *          parameters = { "id" = "expr(object.getCustomer().getId())", "email" = "expr(object.getEmail())"}
+ *      )
+ * )
+ * @Hateoas\Relation(
+ *     "customer",
+ *     embedded = "expr(object.getCustomer())",
+ *     exclusion = @Hateoas\Exclusion(excludeIf = "expr(object.getCustomer() === null)")
+ * )
+ */
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
 #[UniqueEntity('email', message:"Ce mail n'est pas disponible")]
+#[Serializer\ExclusionPolicy("ALL")]
 class Users implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -22,7 +52,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     #[Assert\NotBlank(message:"Le champ email ne peut être vide")]
     #[Assert\Email(message:"Ce mail n'est pas valide !")]
-    #[Groups(['list_users', 'show_user', 'list_customers'])]
+    #[Serializer\Expose()]
     private $email;
 
     #[ORM\Column(type: 'json')]
@@ -36,13 +66,13 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(message:"Le nom ne peut être vide !")]
     #[Assert\Length(min: 3, max: 255, minMessage: "Le nom doit faire minimum {{ limit }} caratères", maxMessage:"Le nom ne doit pas dépasser {{ limit }} caractères")]
-    #[Groups(['list_users', 'show_user', 'list_customers'])]
+    #[Serializer\Expose()]
     private $firstName;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(message:"Le nom ne peut être vide !")]
     #[Assert\Length(min: 3, max: 255, minMessage: "Le prénom doit faire minimum {{ limit }} caratères", maxMessage:"Le prénom ne doit pas dépasser {{ limit }} caractères")]
-    #[Groups(['list_users', 'show_user', 'list_customers'])]
+    #[Serializer\Expose()]
     private $lastName;
 
     #[ORM\Column(type: 'datetime_immutable')]
@@ -53,12 +83,17 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne(targetEntity: Customers::class, inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['show_user'])]
+    #[Serializer\Exclude()]
     private $customer;
 
     #[ORM\Column(type: 'boolean')]
-    #[Groups(['list_users', 'show_user', 'list_customers'])]
+    #[Serializer\Expose()]
     private $isValid = true;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
