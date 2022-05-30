@@ -1,20 +1,20 @@
 <?php
 namespace App\Controller;
 
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use FOS\RestBundle\Controller\Annotations\Post;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SecurityController extends AbstractController
 {
     /**
-     * @Route("/api/login_check", name="login_check", methods={"POST"})
+     * @Post(path="/api/login", name="login_check")
      */
    public function login(): Response
    {
-    return $this->json([
-        'message' => 'Bienvenu',
-        'path' => 'src/Controller/SecurityController.php'
-    ]);
+        return $this->json([
+            'message' => 'Bienvenu',
+            'path' => 'src/Controller/SecurityController.php'
+        ]);
    }
 }

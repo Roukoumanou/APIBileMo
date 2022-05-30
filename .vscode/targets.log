@@ -1,6 +1,4 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
-make: *** No rule to make target 'all'.  Stop.
-
 # GNU Make 4.2.1
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
@@ -8,7 +6,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri May 27 19:29:38 2022
+# Make data base, printed on Sun May 29 21:31:05 2022
 
 # Variables
 
@@ -51,7 +49,7 @@ SNAP_DATA = /var/snap/code/97
 # environment
 VSCODE_NLS_CONFIG = {"locale":"fr","availableLanguages":{"*":"fr"},"_languagePackId":"25fe6a3290ec415596628d4afc87a88c.fr","_translationsConfigFile":"/home/roukoumanou/.config/Code/clp/25fe6a3290ec415596628d4afc87a88c.fr/tcf.json","_cacheRoot":"/home/roukoumanou/.config/Code/clp/25fe6a3290ec415596628d4afc87a88c.fr","_resolvedLanguagePackCoreLocation":"/home/roukoumanou/.config/Code/clp/25fe6a3290ec415596628d4afc87a88c.fr/c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5","_corruptedFile":"/home/roukoumanou/.config/Code/clp/25fe6a3290ec415596628d4afc87a88c.fr/corrupted.info","_languagePackSupport":true}
 # environment
-JOURNAL_STREAM = 8:62477
+JOURNAL_STREAM = 8:56629
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # environment
@@ -75,7 +73,7 @@ VSCODE_VERBOSE_LOGGING = true
 # environment
 _ = /snap/code/97/usr/share/code/code
 # environment
-MANAGERPID = 2697
+MANAGERPID = 2310
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # environment
@@ -89,7 +87,7 @@ PATH = /home/roukoumanou/.platformsh/bin:/usr/local/sbin:/usr/local/bin:/usr/sbi
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/roukoumanou-BOHK-WAX9X:@/tmp/.ICE-unix/2945,unix/roukoumanou-BOHK-WAX9X:/tmp/.ICE-unix/2945
+SESSION_MANAGER = local/roukoumanou-BOHK-WAX9X:@/tmp/.ICE-unix/2558,unix/roukoumanou-BOHK-WAX9X:/tmp/.ICE-unix/2558
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -107,7 +105,7 @@ DISABLE_WAYLAND = 1
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-INVOCATION_ID = ad733007414a48e28e86b13041eebc16
+INVOCATION_ID = 3d306204cebc46c8be5af18861a468ea
 # environment
 GDK_PIXBUF_MODULEDIR = /snap/code/97/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
 # default
@@ -119,7 +117,7 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 32428
+GIO_LAUNCHED_DESKTOP_FILE_PID = 3031
 # automatic
 %F = $(notdir $%)
 # environment
@@ -133,7 +131,7 @@ PWD = /home/roukoumanou/Sites/BileMo
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 2885
+SSH_AGENT_PID = 2498
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -183,7 +181,7 @@ SHLVL = 0
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-627695c9-ac4e-404b-ae46-35288a69f0e1.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-f239adcc-763e-4a29-b428-8adb6c226954.sock
 # default
 MAKE_VERSION := 4.2.1
 # environment
@@ -251,7 +249,7 @@ GJS_DEBUG_OUTPUT = stderr
 # environment
 LANG = C
 # environment
-VSCODE_PID = 32479
+VSCODE_PID = 3137
 # variable set hash-table stats:
 # Load=120/1024=12%, Rehash=0, Collisions=18/145=12%
 
@@ -282,7 +280,9 @@ all:
 Makefile:
 #  Implicit rule search has been done.
  
-#  Last modified 2022-05-24 16:44:21.384336049
+make: *** No rule to make target 'all'.  Stop.
+
+#  Last modified 2022-05-29 19:32:57.517775823
 #  File has been updated.
 #  Successfully updated.
 
@@ -317,6 +317,6 @@ install:
 # strcache performance: lookups = 38 / hit rate = 13%
 # hash-table stats:
 # Load=33/8192=0%, Rehash=0, Collisions=1/38=3%
-# Finished Make data base on Fri May 27 19:29:38 2022
+# Finished Make data base on Sun May 29 21:31:05 2022
 
  
