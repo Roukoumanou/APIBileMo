@@ -6,7 +6,9 @@ use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations\Get;
 use Symfony\Component\HttpFoundation\Response;
 use App\Service\Interfaces\ProductsManagementInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 
 class ProductsController extends AbstractController
 {
@@ -19,6 +21,7 @@ class ProductsController extends AbstractController
 
     /**
      * @Get(path="/api/products", name="products")
+     * @IsGranted("ROLE_CUSTOMER")
      *
      * @param Request $request
      * @return Response
@@ -36,6 +39,7 @@ class ProductsController extends AbstractController
 
     /**
      * @Get(path="/api/products/{id}", name="show_product")
+     * @IsGranted("ROLE_CUSTOMER")
      *
      * @param Products $product
      */

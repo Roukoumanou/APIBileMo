@@ -7,7 +7,6 @@ use Pagerfanta\Pagerfanta;
 use Hateoas\Configuration\Route;
 use App\Repository\UsersRepository;
 use Pagerfanta\Adapter\ArrayAdapter;
-use App\Repository\CustomersRepository;
 use JMS\Serializer\SerializerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,8 +26,6 @@ class CustomersUsersService implements CustomersUsersManagementInterface
 
     private EntityManagerInterface $em;
 
-    private CustomersRepository $customersRepository;
-
     private ValidatorInterface $validator;
 
     private UserPasswordHasherInterface $hasher;
@@ -40,7 +37,6 @@ class CustomersUsersService implements CustomersUsersManagementInterface
     public function __construct(
         UsersRepository $usersRepository,
         EntityManagerInterface $em,
-        CustomersRepository $customersRepository,
         ValidatorInterface $validator,
         UserPasswordHasherInterface $hasher,
         SerializerInterface $serializer, 
@@ -49,7 +45,6 @@ class CustomersUsersService implements CustomersUsersManagementInterface
     {
         $this->usersRepository = $usersRepository;
         $this->em = $em;
-        $this->customersRepository = $customersRepository;
         $this->validator = $validator;
         $this->hasher = $hasher;
         $this->serializer = $serializer;
@@ -85,16 +80,13 @@ class CustomersUsersService implements CustomersUsersManagementInterface
     /**
      * Renvois un utilisateur lié à un client pour affichage de ses détails
      *
+     * @param Customers $customer
      * @param Request $request
      * @return string
      */
-    public function customerUserShow(Request $request): string
+    public function customerUserShow(Customers $customer, Request $request): string
     {
-        $id = (int) $request->get('id');
         $email = (string) $request->get('email');
-
-        $customer = $this->getCustomer($id);
-
 
         $user = $this->getUser($customer, $email);
 
@@ -106,14 +98,12 @@ class CustomersUsersService implements CustomersUsersManagementInterface
     /**
      * Ajoute un utilisateur lié à un client dans la base de donnée
      *
+     * @param Customers $customer
      * @param Request $request
+     * @return void
      */
-    public function addUserLinkedCustomer(Request $request)
+    public function addUserLinkedCustomer(Customers $customer, Request $request)
     {
-        $id = (int) $request->get('id');
-
-        $customer = $this->getCustomer($id);
-        
         /** @var Users $user */
         $user = $this->symSerializer->deserialize( (string) $request->getContent(), "App\Entity\Users", 'json');
 
@@ -151,15 +141,14 @@ class CustomersUsersService implements CustomersUsersManagementInterface
     /**
      * Permet de désactiver un utilisateur lié à un client dans la base de donnée
      *
+     * @param Customers $customer
      * @param Request $request
-     * @return Users
+     * @return string
      */
-    public function deleteUserLinkedCustomer(Request $request): string
+    public function deleteUserLinkedCustomer(Customers $customer, Request $request): string
     {
-        $id = (int) $request->get('id');
         $email = (string) $request->get('email');
 
-        $customer = $this->getCustomer($id);
         $user = $this->getUser($customer, $email);
         $user->setIsValid(false);
 
@@ -168,19 +157,6 @@ class CustomersUsersService implements CustomersUsersManagementInterface
         $data = $this->serializer->serialize($user, 'json');
 
         return $data;
-    }
-
-    /**
-     * Renvois un client ou null
-     *
-     * @param int $id
-     * @return Customers|null
-     */
-    private function getCustomer(string $id): ?Customers
-    {
-        $customer = $this->customersRepository->find($id);
-
-        return $customer;
     }
 
     /**
@@ -195,6 +171,10 @@ class CustomersUsersService implements CustomersUsersManagementInterface
         
         /** @var Users $user */
         $user = $this->usersRepository->findFordetail($email, $customer);
+
+        if ($user === null) {
+            throw new ResourceViolationException("Nous ne retrouvons pas cet utilisateur");
+        }
 
         return $user;
     }
