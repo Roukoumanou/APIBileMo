@@ -1,33 +1,28 @@
 <?php
 namespace App\Controller;
 
-use App\Entity\Users;
 use App\Entity\Customers;
-use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations\Get;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\Controller\Annotations\Post;
-use FOS\RestBundle\Controller\Annotations\View;
 use FOS\RestBundle\Controller\Annotations\Delete;
 use App\Service\Interfaces\CustomersUsersManagementInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class CustomersUsersController extends AbstractController
 {
     private CustomersUsersManagementInterface $iCustomers;
 
-    private SerializerInterface $serializer;
-
-    public function __construct(CustomersUsersManagementInterface $iCustomers, SerializerInterface $serializer)
+    public function __construct(CustomersUsersManagementInterface $iCustomers)
     {
         $this->iCustomers = $iCustomers;
-        $this->serializer = $serializer;
     }
 
     /**
      * @Get(path="/api/customer/{id}/users", name="customer_users")
+     * @Security("is_granted('ROLE_CUSTOMER') and user.getUserIdentifier() === customer.getUserIdentifier()")
      *
      * @param Customers $customer
      * @return Response
@@ -45,13 +40,15 @@ class CustomersUsersController extends AbstractController
 
     /**
      * @Get(path="/api/customer/{id}/user/{email}", name="customer_user_detail")
+     * @Security("is_granted('ROLE_CUSTOMER') and user.getUserIdentifier() === customer.getUserIdentifier()")
      *
+     * @param Customers $customer
      * @param Request $request
      * @return Response
      */
-    public function customerUserShow(Request $request): Response
+    public function customerUserShow(Customers $customer, Request $request): Response
     {
-        $data = $this->iCustomers->customerUserShow($request);
+        $data = $this->iCustomers->customerUserShow($customer, $request);
 
         $response = new Response($data, Response::HTTP_OK, ['Content-Type' => 'application/json']);
         
@@ -60,13 +57,15 @@ class CustomersUsersController extends AbstractController
 
     /**
      * @Post(path="/api/customer/{id}/users", name="add_user_by_customer")
+     * @Security("is_granted('ROLE_CUSTOMER') and user.getUserIdentifier() === customer.getUserIdentifier()")
      *
+     * @param Customers $customer
      * @param Request $request
      * @return Response
      */
-    public function addUserLinkedCustomer(Request $request): Response
+    public function addUserLinkedCustomer(Customers $customer, Request $request): Response
     {
-        $user = $this->iCustomers->addUserLinkedCustomer($request);
+        $user = $this->iCustomers->addUserLinkedCustomer($customer, $request);
         
         $response = new Response($user, Response::HTTP_CREATED, ['Content-Type' => 'application/json']);
         
@@ -75,13 +74,15 @@ class CustomersUsersController extends AbstractController
 
     /**
      * @Delete(path="/api/customer/{id}/user/{email}", name="delete_user_by_customer")
+     * @Security("is_granted('ROLE_CUSTOMER') and user.getUserIdentifier() === customer.getUserIdentifier()")
      *
+     * @param Customers $customer
      * @param Request $request
      * @return Response
      */
-    public function deleteUserLinkedCustomer(Request $request): Response
+    public function deleteUserLinkedCustomer(Customers $customer, Request $request): Response
     {
-        $user = $this->iCustomers->deleteUserLinkedCustomer($request);
+        $user = $this->iCustomers->deleteUserLinkedCustomer($customer, $request);
         
         $response = new Response($user, Response::HTTP_OK, ['Content-Type' => 'application/json']);
         

@@ -9,9 +9,9 @@ interface CustomersUsersManagementInterface
 {
     public function customersUsersList(Customers $customer, int $page): string;
 
-    public function customerUserShow(Request $request): string;
+    public function customerUserShow(Customers $customer, Request $request): string;
 
-    public function addUserLinkedCustomer(Request $request);
+    public function addUserLinkedCustomer(Customers $customer, Request $request);
 
-    public function deleteUserLinkedCustomer(Request $request): string;
+    public function deleteUserLinkedCustomer(Customers $customer, Request $request): string;
 }

@@ -33,10 +33,21 @@ class AppFixtures extends Fixture
             $customer->setEmail("bouygue@bilmo.com")
             ->setPassword($this->hasher->hashPassword($customer, "password"))
             ->setCompany("Bouygue Telecome")
+            ->setRoles(["ROLE_CUSTOMER"])
             ->setCreatedAt(new \DateTimeImmutable())
             ;
 
         $manager->persist($customer);
+
+        $customer2 = (new Customers())
+            ->setEmail("france.info@bilmo.com")
+            ->setPassword($this->hasher->hashPassword($customer, "password"))
+            ->setCompany("France Info")
+            ->setRoles(["ROLE_CUSTOMER"])
+            ->setCreatedAt(new \DateTimeImmutable())
+        ;
+
+        $manager->persist($customer2);
 
         for ($u = 1; $u <= 3; $u++){
             $user = new Users();

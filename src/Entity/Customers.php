@@ -7,13 +7,14 @@ use App\Repository\CustomersRepository;
 use JMS\Serializer\Annotation as Serializer;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Lexik\Bundle\JWTAuthenticationBundle\Security\User\JWTUserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: CustomersRepository::class)]
 #[Serializer\ExclusionPolicy("ALL")]
-class Customers implements UserInterface, PasswordAuthenticatedUserInterface
+class Customers implements UserInterface, PasswordAuthenticatedUserInterface, JWTUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -49,8 +50,10 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: Users::class, orphanRemoval: true)]
     private $users;
 
-    public function __construct()
+    public function __construct($username = "", array $roles = [])
     {
+        $this->setEmail($username);
+        $this->roles = $roles;
         $this->users = new ArrayCollection();
     }
 
@@ -77,6 +80,14 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
      * @see UserInterface
      */
     public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    /**
+     * @deprecated since Symfony 5.3, use getUserIdentifier instead
+     */
+    public function getUsername(): string
     {
         return (string) $this->email;
     }
@@ -186,5 +197,13 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    public static function createFromPayload($username, array $payload)
+    {
+        return new self(
+            $username,
+            $payload['roles'], // Added by default
+        );
     }
 }
