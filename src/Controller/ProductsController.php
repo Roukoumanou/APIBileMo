@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Entity\Products;
+use OpenApi\Annotations as Doc;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations\Get;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,6 +23,10 @@ class ProductsController extends AbstractController
     /**
      * @Get(path="/api/products", name="products")
      * @IsGranted("ROLE_CUSTOMER")
+     * @Doc\Response(
+     *      response=200,
+     *      description="Get the list of all BileMo products."
+     * )
      *
      * @param Request $request
      * @return Response
@@ -40,6 +45,16 @@ class ProductsController extends AbstractController
     /**
      * @Get(path="/api/products/{id}", name="show_product")
      * @IsGranted("ROLE_CUSTOMER")
+     * @Doc\Response(
+     *      response=200,
+     *      description="Get details of a BileMo product."
+     * )
+     * @Doc\Parameter(
+     *     name="id",
+     *     in="path",
+     *     description="This is the unique id of the product we want to obtain.",
+     *     @Doc\Schema(type="integer")
+     * ) 
      *
      * @param Products $product
      */
