@@ -2,7 +2,9 @@
 namespace App\Controller;
 
 use App\Entity\Customers;
+use OpenApi\Annotations as Doc;
 use Symfony\Component\HttpFoundation\Request;
+use Nelmio\ApiDocBundle\Annotation\Security as NelmSecurity;
 use FOS\RestBundle\Controller\Annotations\Get;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\Controller\Annotations\Post;
@@ -23,6 +25,16 @@ class CustomersUsersController extends AbstractController
     /**
      * @Get(path="/api/customer/{id}/users", name="customer_users")
      * @Security("is_granted('ROLE_CUSTOMER') and user.getUserIdentifier() === customer.getUserIdentifier()")
+     * @Doc\Response(
+     *      response=200,
+     *      description="Get the list of all users linked to a customer."
+     * )
+     * @Doc\Parameter(
+     *     name="id",
+     *     in="path",
+     *     description="This is the unique id of the customer making the request",
+     *     @Doc\Schema(type="integer")
+     * )
      *
      * @param Customers $customer
      * @return Response
@@ -41,6 +53,16 @@ class CustomersUsersController extends AbstractController
     /**
      * @Get(path="/api/customer/{id}/user/{email}", name="customer_user_detail")
      * @Security("is_granted('ROLE_CUSTOMER') and user.getUserIdentifier() === customer.getUserIdentifier()")
+     * @Doc\Response(
+     *      response=200,
+     *      description="Get a user's details related to a customer."
+     * )
+     * @Doc\Parameter(
+     *     name="id",
+     *     in="path",
+     *     description="This is the unique id of the customer making the request",
+     *     @Doc\Schema(type="integer")
+     * ) 
      *
      * @param Customers $customer
      * @param Request $request
@@ -58,6 +80,16 @@ class CustomersUsersController extends AbstractController
     /**
      * @Post(path="/api/customer/{id}/users", name="add_user_by_customer")
      * @Security("is_granted('ROLE_CUSTOMER') and user.getUserIdentifier() === customer.getUserIdentifier()")
+     * @Doc\Response(
+     *      response=201,
+     *      description="Add a user linked to a customer."
+     * )
+     * @Doc\Parameter(
+     *     name="id",
+     *     in="path",
+     *     description="This is the unique id of the customer making the request",
+     *     @Doc\Schema(type="integer")
+     * ) 
      *
      * @param Customers $customer
      * @param Request $request
@@ -75,6 +107,16 @@ class CustomersUsersController extends AbstractController
     /**
      * @Delete(path="/api/customer/{id}/user/{email}", name="delete_user_by_customer")
      * @Security("is_granted('ROLE_CUSTOMER') and user.getUserIdentifier() === customer.getUserIdentifier()")
+     * @Doc\Response(
+     *      response=200,
+     *      description="Delete a user linked to a customer."
+     * )
+     * @Doc\Parameter(
+     *     name="id",
+     *     in="path",
+     *     description="This is the unique id of the customer making the request",
+     *     @Doc\Schema(type="integer")
+     * ) 
      *
      * @param Customers $customer
      * @param Request $request

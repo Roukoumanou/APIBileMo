@@ -1,0 +1,11 @@
+nelmio_api_doc:
+    documentation:
+        security:
+            - Bearer: []
+        info:
+            title: BileMo API
+            description: La plateforme de vente de telephone B to B!
+            version: 1.0.0
+    areas: # to filter documented areas
+        path_patterns:
+            - ^/api(?!/doc$) # Accepts routes under /api except /api/doc
