@@ -54,7 +54,7 @@ class ProductsController extends AbstractController
      *     in="path",
      *     description="This is the unique id of the product we want to obtain.",
      *     @Doc\Schema(type="integer")
-     * ) 
+     * )
      *
      * @param Products $product
      */

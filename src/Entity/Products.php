@@ -29,18 +29,21 @@ class Products
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(message:"Cet champs est obligatoire")]
     #[Serializer\Expose()]
+    #[Serializer\Since("1.0.0")]
     private $name;
 
     #[ORM\Column(type: 'text')]
     #[Assert\NotBlank(message:"Cet champs est obligatoire")]
     #[Assert\Length(min:20, max:2000, minMessage:"La description doit faire minimum {{ limit }} caractères", maxMessage:"La description doit faire maximum {{ limit }} caratères")]
     #[Serializer\Expose()]
+    #[Serializer\Since("1.0.0")]
     private $description;
 
     #[ORM\Column(type: 'float')]
     #[Assert\NotBlank(message:"Cet champs est obligatoire")]
     #[Assert\PositiveOrZero(message:"Le prix doit être positif")]
     #[Serializer\Expose()]
+    #[Serializer\Since("1.0.0")]
     private $price;
 
     #[ORM\Column(type: 'integer')]

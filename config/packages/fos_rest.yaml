@@ -3,13 +3,33 @@ fos_rest:
     param_fetcher_listener:  true
     allowed_methods_listener:  true
 #    routing_loader: true
-#    view:
+    view:
+        mime_types:
+            json: ['application/json', 'application/json;version=1.0.0']
 #        view_response_listener:  true
     exception:
         codes:
-            { App\Exceptions\ResourceViolationException: 400 }
+            { App\Exceptions\ResourceViolationException: 500 }
 #        messages:
 #            App\Exception\MyException: Forbidden area.
     format_listener:
         rules:
             - { path: ^/api, prefer_extension: true, fallback_format: json, priorities: [ json ] }
+
+    versioning:
+        enabled: true
+        default_version: null
+        resolvers:
+            query:
+                enabled: true
+                parameter_name: version
+            custom_header:
+                enabled: true
+                header_name: X-Accept-Version
+            media_type:
+                enabled: true
+                regex: '/(v|version)=(?P<version>[0-9\.]+)/'
+        guessing_order:
+            - query
+            - custom_header
+            - media_type
