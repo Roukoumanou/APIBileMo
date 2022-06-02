@@ -53,6 +53,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank(message:"Le champ email ne peut être vide")]
     #[Assert\Email(message:"Ce mail n'est pas valide !")]
     #[Serializer\Expose()]
+    #[Serializer\Since("1.0.0")]
     private $email;
 
     #[ORM\Column(type: 'json')]
@@ -67,12 +68,14 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank(message:"Le nom ne peut être vide !")]
     #[Assert\Length(min: 3, max: 255, minMessage: "Le nom doit faire minimum {{ limit }} caratères", maxMessage:"Le nom ne doit pas dépasser {{ limit }} caractères")]
     #[Serializer\Expose()]
+    #[Serializer\Since("1.0.0")]
     private $firstName;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(message:"Le nom ne peut être vide !")]
     #[Assert\Length(min: 3, max: 255, minMessage: "Le prénom doit faire minimum {{ limit }} caratères", maxMessage:"Le prénom ne doit pas dépasser {{ limit }} caractères")]
     #[Serializer\Expose()]
+    #[Serializer\Since("1.0.0")]
     private $lastName;
 
     #[ORM\Column(type: 'datetime_immutable')]
@@ -88,6 +91,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'boolean')]
     #[Serializer\Expose()]
+    #[Serializer\Since("1.0.0")]
     private $isValid = true;
 
     public function __construct()

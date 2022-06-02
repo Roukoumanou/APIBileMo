@@ -25,6 +25,7 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface, JW
     #[Assert\NotBlank(message:"Le champ email ne peut être vide")]
     #[Assert\Email(message:"Ce mail n'est pas valide !")]
     #[Serializer\Expose()]
+    #[Serializer\Since("1.0.0")]
     private $email;
 
     #[ORM\Column(type: 'json')]
@@ -37,6 +38,7 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface, JW
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(message:"le nom de la société ne peut être vide !")]
     #[Serializer\Expose()]
+    #[Serializer\Since("1.0.0")]
     private $company;
 
     #[ORM\Column(type: 'datetime_immutable')]
