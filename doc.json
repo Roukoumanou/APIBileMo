@@ -1,0 +1,156 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "BileMo API",
+        "description": "La plateforme de vente de telephone B to B!",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "\/api\/doc.json": {
+            "get": {
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "\/api\/customer\/{id}\/users": {
+            "get": {
+                "operationId": "get_customer_users",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "This is the unique id of the customer making the request",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Get the list of all users linked to a customer."
+                    }
+                }
+            },
+            "post": {
+                "operationId": "post_add_user_by_customer",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "This is the unique id of the customer making the request",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Add a user linked to a customer."
+                    }
+                }
+            }
+        },
+        "\/api\/customer\/{id}\/user\/{email}": {
+            "get": {
+                "operationId": "get_customer_user_detail",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "This is the unique id of the customer making the request",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Get a user's details related to a customer."
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "delete_delete_user_by_customer",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "This is the unique id of the customer making the request",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delete a user linked to a customer."
+                    }
+                }
+            }
+        },
+        "\/api\/products": {
+            "get": {
+                "operationId": "get_products",
+                "responses": {
+                    "200": {
+                        "description": "Get the list of all BileMo products."
+                    }
+                }
+            }
+        },
+        "\/api\/products\/{id}": {
+            "get": {
+                "operationId": "get_show_product",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "This is the unique id of the product we want to obtain.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Get details of a BileMo product."
+                    }
+                }
+            }
+        },
+        "\/api\/login": {
+            "post": {
+                "operationId": "post_login",
+                "responses": {
+                    "200": {
+                        "description": "This is the URI that allows you to log in to get a token"
+                    }
+                }
+            }
+        }
+    }
+}

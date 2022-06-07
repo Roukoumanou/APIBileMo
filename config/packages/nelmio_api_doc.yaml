@@ -1,7 +1,5 @@
 nelmio_api_doc:
     documentation:
-        security:
-            - Bearer: []
         info:
             title: BileMo API
             description: La plateforme de vente de telephone B to B!
