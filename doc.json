@@ -6,7 +6,7 @@
         "version": "1.0.0"
     },
     "paths": {
-        "\/api\/doc.json": {
+        "/api/doc.json": {
             "get": {
                 "responses": {
                     "default": {
@@ -15,7 +15,7 @@
                 }
             }
         },
-        "\/api\/customer\/{id}\/users": {
+        "/api/customers/{id}/users": {
             "get": {
                 "operationId": "get_customer_users",
                 "parameters": [
@@ -33,7 +33,12 @@
                     "200": {
                         "description": "Get the list of all users linked to a customer."
                     }
-                }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
             },
             "post": {
                 "operationId": "post_add_user_by_customer",
@@ -48,14 +53,34 @@
                         }
                     }
                 ],
+                "requestBody": {
+                    "description": "You will need to fill in the fields: first_name, last_name, email and a password for your user",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {},
+                            "example": {
+                                "first_name": "firstName",
+                                "last_name": "lastName",
+                                "email": "bilmo@gmail.com",
+                                "password": "password"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "201": {
                         "description": "Add a user linked to a customer."
                     }
-                }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
             }
         },
-        "\/api\/customer\/{id}\/user\/{email}": {
+        "/api/customers/{id}/users/{email}": {
             "get": {
                 "operationId": "get_customer_user_detail",
                 "parameters": [
@@ -81,7 +106,12 @@
                     "200": {
                         "description": "Get a user's details related to a customer."
                     }
-                }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
             },
             "delete": {
                 "operationId": "delete_delete_user_by_customer",
@@ -108,10 +138,15 @@
                     "200": {
                         "description": "Delete a user linked to a customer."
                     }
-                }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
             }
         },
-        "\/api\/products": {
+        "/api/products": {
             "get": {
                 "operationId": "get_products",
                 "responses": {
@@ -121,7 +156,7 @@
                 }
             }
         },
-        "\/api\/products\/{id}": {
+        "/api/products/{id}": {
             "get": {
                 "operationId": "get_show_product",
                 "parameters": [
@@ -142,9 +177,22 @@
                 }
             }
         },
-        "\/api\/login": {
+        "/api/login": {
             "post": {
                 "operationId": "post_login",
+                "requestBody": {
+                    "description": "You will need to fill in the fields: username and password",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {},
+                            "example": {
+                                "username": "bilmo@gmail.com",
+                                "password": "password"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "This is the URI that allows you to log in to get a token"
@@ -152,5 +200,19 @@
                 }
             }
         }
-    }
+    },
+    "components": {
+        "securitySchemes": {
+            "Bearer": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "security": [
+        {
+            "Bearer": []
+        }
+    ]
 }

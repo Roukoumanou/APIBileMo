@@ -3,12 +3,13 @@ namespace App\Controller;
 
 use App\Entity\Customers;
 use OpenApi\Annotations as Doc;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Component\HttpFoundation\Request;
-use Nelmio\ApiDocBundle\Annotation\Security as NelmSecurity;
 use FOS\RestBundle\Controller\Annotations\Get;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\Delete;
+use Nelmio\ApiDocBundle\Annotation\Security as NelSecurity;
 use App\Service\Interfaces\CustomersUsersManagementInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,7 +24,7 @@ class CustomersUsersController extends AbstractController
     }
 
     /**
-     * @Get(path="/api/customer/{id}/users", name="customer_users")
+     * @Get(path="/api/customers/{id}/users", name="customer_users")
      * @Security("is_granted('ROLE_CUSTOMER') and user.getUserIdentifier() === customer.getUserIdentifier()")
      * @Doc\Response(
      *      response=200,
@@ -35,6 +36,7 @@ class CustomersUsersController extends AbstractController
      *     description="This is the unique id of the customer making the request",
      *     @Doc\Schema(type="integer")
      * )
+     * @NelSecurity(name="Bearer")
      *
      * @param Customers $customer
      * @return Response
@@ -51,7 +53,7 @@ class CustomersUsersController extends AbstractController
     }
 
     /**
-     * @Get(path="/api/customer/{id}/user/{email}", name="customer_user_detail")
+     * @Get(path="/api/customers/{id}/users/{email}", name="customer_user_detail")
      * @Security("is_granted('ROLE_CUSTOMER') and user.getUserIdentifier() === customer.getUserIdentifier()")
      * @Doc\Response(
      *      response=200,
@@ -62,7 +64,8 @@ class CustomersUsersController extends AbstractController
      *     in="path",
      *     description="This is the unique id of the customer making the request",
      *     @Doc\Schema(type="integer")
-     * ) 
+     * )
+     * @NelSecurity(name="Bearer")
      *
      * @param Customers $customer
      * @param Request $request
@@ -78,7 +81,7 @@ class CustomersUsersController extends AbstractController
     }
 
     /**
-     * @Post(path="/api/customer/{id}/users", name="add_user_by_customer")
+     * @Post(path="/api/customers/{id}/users", name="add_user_by_customer")
      * @Security("is_granted('ROLE_CUSTOMER') and user.getUserIdentifier() === customer.getUserIdentifier()")
      * @Doc\Response(
      *      response=201,
@@ -89,7 +92,27 @@ class CustomersUsersController extends AbstractController
      *     in="path",
      *     description="This is the unique id of the customer making the request",
      *     @Doc\Schema(type="integer")
-     * ) 
+     * )
+     * @Doc\RequestBody(
+     *      description= "You will need to fill in the fields: first_name, last_name, email and a password for your user",
+     *      required= true,
+     *      @Doc\JsonContent(
+     *          example={
+     *              "first_name": "firstName",
+     *              "last_name": "lastName",
+     *              "email": "bilmo@gmail.com",
+     *              "password": "password"
+     *          },
+     *          @Doc\Schema(
+     *              type="object",
+     *              @Doc\Property(property="first_name", required=true, description="Add first name", type="string"),
+     *              @Doc\Property(property="last_name", required=true, description="Add last name", type="string"),
+     *              @Doc\Property(property="email", required=true, description="add email", type="string"),
+     *              @Doc\Property(property="password", required=true, description="add password", type="string")
+     *          )
+     *      )
+     * )
+     * @NelSecurity(name="Bearer")
      *
      * @param Customers $customer
      * @param Request $request
@@ -105,7 +128,7 @@ class CustomersUsersController extends AbstractController
     }
 
     /**
-     * @Delete(path="/api/customer/{id}/user/{email}", name="delete_user_by_customer")
+     * @Delete(path="/api/customers/{id}/users/{email}", name="delete_user_by_customer")
      * @Security("is_granted('ROLE_CUSTOMER') and user.getUserIdentifier() === customer.getUserIdentifier()")
      * @Doc\Response(
      *      response=200,
@@ -116,7 +139,8 @@ class CustomersUsersController extends AbstractController
      *     in="path",
      *     description="This is the unique id of the customer making the request",
      *     @Doc\Schema(type="integer")
-     * ) 
+     * )
+     * @NelSecurity(name="Bearer")
      *
      * @param Customers $customer
      * @param Request $request
