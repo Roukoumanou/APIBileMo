@@ -5,6 +5,5 @@ php bin/console d:s:u -f
 php bin/console d:f:l --no-interaction
 composer install
 php -S localhost:8000 -t public
- 
 make: Leaving directory '/home/roukoumanou/Sites/BileMo'
  
