@@ -1,6 +1,4 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
-make: *** No rule to make target 'all'.  Stop.
-
 # GNU Make 4.2.1
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
@@ -8,7 +6,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Thu Jun  9 13:09:35 2022
+# Make data base, printed on Wed Jun 15 22:09:00 2022
 
 # Variables
 
@@ -47,11 +45,11 @@ CURDIR := /home/roukoumanou/Sites/BileMo
 # makefile
 SHELL = /bin/sh
 # environment
-SNAP_DATA = /var/snap/code/97
+SNAP_DATA = /var/snap/code/98
 # environment
-VSCODE_NLS_CONFIG = {"locale":"fr","availableLanguages":{"*":"fr"},"_languagePackId":"25fe6a3290ec415596628d4afc87a88c.fr","_translationsConfigFile":"/home/roukoumanou/.config/Code/clp/25fe6a3290ec415596628d4afc87a88c.fr/tcf.json","_cacheRoot":"/home/roukoumanou/.config/Code/clp/25fe6a3290ec415596628d4afc87a88c.fr","_resolvedLanguagePackCoreLocation":"/home/roukoumanou/.config/Code/clp/25fe6a3290ec415596628d4afc87a88c.fr/c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5","_corruptedFile":"/home/roukoumanou/.config/Code/clp/25fe6a3290ec415596628d4afc87a88c.fr/corrupted.info","_languagePackSupport":true}
+VSCODE_NLS_CONFIG = {"locale":"fr","availableLanguages":{"*":"fr"},"_languagePackId":"575d78304484aa5fa0cbb32d34fd883d.fr","_translationsConfigFile":"/home/roukoumanou/.config/Code/clp/575d78304484aa5fa0cbb32d34fd883d.fr/tcf.json","_cacheRoot":"/home/roukoumanou/.config/Code/clp/575d78304484aa5fa0cbb32d34fd883d.fr","_resolvedLanguagePackCoreLocation":"/home/roukoumanou/.config/Code/clp/575d78304484aa5fa0cbb32d34fd883d.fr/4af164ea3a06f701fe3e89a2bcbb421d2026b68f","_corruptedFile":"/home/roukoumanou/.config/Code/clp/575d78304484aa5fa0cbb32d34fd883d.fr/corrupted.info","_languagePackSupport":true}
 # environment
-JOURNAL_STREAM = 8:57523
+JOURNAL_STREAM = 8:56617
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # environment
@@ -73,15 +71,15 @@ DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-_ = /snap/code/97/usr/share/code/code
+_ = /snap/code/98/usr/share/code/code
 # environment
-MANAGERPID = 2386
+MANAGERPID = 2385
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # environment
 VSCODE_CWD = /home/roukoumanou
 # environment
-GSETTINGS_SCHEMA_DIR = /snap/code/97/usr/share/glib-2.0/schemas
+GSETTINGS_SCHEMA_DIR = /snap/code/98/usr/share/glib-2.0/schemas
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
 # environment
@@ -89,15 +87,15 @@ PATH = /home/roukoumanou/.platformsh/bin:/usr/local/sbin:/usr/local/bin:/usr/sbi
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/roukoumanou-BOHK-WAX9X:@/tmp/.ICE-unix/2638,unix/roukoumanou-BOHK-WAX9X:/tmp/.ICE-unix/2638
+SESSION_MANAGER = local/roukoumanou-BOHK-WAX9X:@/tmp/.ICE-unix/2644,unix/roukoumanou-BOHK-WAX9X:/tmp/.ICE-unix/2644
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
 GDK_PIXBUF_MODULE_FILE = /home/roukoumanou/snap/code/common/.cache/gdk-pixbuf-loaders.cache
 # environment
-SNAP = /snap/code/97
+SNAP = /snap/code/98
 # environment
-SNAP_VERSION = c3511e6c
+SNAP_VERSION = 4af164ea
 # environment
 XDG_MENU_PREFIX = gnome-
 # environment
@@ -107,9 +105,9 @@ DISABLE_WAYLAND = 1
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-INVOCATION_ID = 1ee0957220584a2eb57a8f0dd4d2756f
+INVOCATION_ID = d0077df87901496e88c424a22388d69e
 # environment
-GDK_PIXBUF_MODULEDIR = /snap/code/97/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
+GDK_PIXBUF_MODULEDIR = /snap/code/98/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -119,7 +117,7 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 3306
+GIO_LAUNCHED_DESKTOP_FILE_PID = 52878
 # automatic
 %F = $(notdir $%)
 # environment
@@ -133,7 +131,7 @@ PWD = /home/roukoumanou/Sites/BileMo
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 2577
+SSH_AGENT_PID = 2578
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -147,7 +145,7 @@ LESSCLOSE = /usr/bin/lesspipe %s %s
 # environment
 VSCODE_CLI = 1
 # environment
-VSCODE_CODE_CACHE_PATH = /home/roukoumanou/.config/Code/CachedData/c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5
+VSCODE_CODE_CACHE_PATH = /home/roukoumanou/.config/Code/CachedData/4af164ea3a06f701fe3e89a2bcbb421d2026b68f
 # environment
 LOGNAME = roukoumanou
 # environment
@@ -177,19 +175,19 @@ MAKECMDGOALS := all
 # environment
 QT_IM_MODULE = ibus
 # environment
-SNAP_USER_DATA = /home/roukoumanou/snap/code/97
+SNAP_USER_DATA = /home/roukoumanou/snap/code/98
 # environment
 SHLVL = 0
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-c84998cd-3fc0-43f1-955e-9ffb3af1f0da.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-e9b53016-c7ac-47cc-8bb5-c7810049ff7b.sock
 # default
 MAKE_VERSION := 4.2.1
 # environment
 USER = roukoumanou
 # environment
-SNAP_REVISION = 97
+SNAP_REVISION = 98
 # makefile
 .DEFAULT_GOAL := install
 # environment
@@ -203,7 +201,7 @@ MAKE_COMMAND := make
 # automatic
 *F = $(notdir $*)
 # environment
-VSCODE_IPC_HOOK = /run/user/1000/vscode-c84cc51a-1.67.2-main.sock
+VSCODE_IPC_HOOK = /run/user/1000/vscode-c84cc51a-1.68.0-main.sock
 # environment
 BAMF_DESKTOP_FILE_HINT = /var/lib/snapd/desktop/applications/code_code.desktop
 # makefile
@@ -251,7 +249,7 @@ GJS_DEBUG_OUTPUT = stderr
 # environment
 LANG = C
 # environment
-VSCODE_PID = 3463
+VSCODE_PID = 52931
 # variable set hash-table stats:
 # Load=120/1024=12%, Rehash=0, Collisions=18/145=12%
 
@@ -261,9 +259,9 @@ VSCODE_PID = 3463
 
 # Directories
 
-# . (device 2051, inode 14158937): 30 files, no impossibilities.
+# . (device 2051, inode 14158937): 31 files, no impossibilities.
 
-# 30 files, no impossibilities in 1 directories.
+# 31 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -281,7 +279,6 @@ all:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
- 
 #  Last modified 2022-05-29 19:32:57.517775823
 #  File has been updated.
 #  Successfully updated.
@@ -290,6 +287,9 @@ Makefile:
 .DEFAULT:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
+ 
+make: *** No rule to make target 'all'.  Stop.
+
 #  File has not been updated.
 
 install:
@@ -311,12 +311,12 @@ install:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 36 / storage = 370 B / avg = 10 B
-# current buf: size = 8162 B / used = 370 B / count = 36 / avg = 10 B
+# strcache buffers: 1 (0) / strings = 37 / storage = 380 B / avg = 10 B
+# current buf: size = 8162 B / used = 380 B / count = 37 / avg = 10 B
 
-# strcache performance: lookups = 41 / hit rate = 12%
+# strcache performance: lookups = 42 / hit rate = 11%
 # hash-table stats:
-# Load=36/8192=0%, Rehash=0, Collisions=1/41=2%
-# Finished Make data base on Thu Jun  9 13:09:35 2022
+# Load=37/8192=0%, Rehash=0, Collisions=1/42=2%
+# Finished Make data base on Wed Jun 15 22:09:00 2022
 
  
